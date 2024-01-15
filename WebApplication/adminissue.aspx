@@ -1,6 +1,4 @@
-﻿<asp:FormView ID="FormView1" runat="server"></asp:FormView>
-
-<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="adminissue.aspx.cs" Inherits="WebApplication.adminissue" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="adminissue.aspx.cs" Inherits="WebApplication.adminissue" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">

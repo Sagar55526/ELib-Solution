@@ -19,9 +19,23 @@ namespace WebApplication
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            try
             {
-                fillAuthorPublisherValues();
+                if (Session["username"].ToString() == "" || Session["username"] == null)
+                {
+                    Response.Write("<script>alert('Session Expired Login Again');</script>");
+                    Response.Redirect("userlogin.aspx");
+                }
+                else
+                {
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Response.Write("<script>alert('"+ex.Message+"');</script>");
+                Response.Redirect("userlogin.aspx");
             }
             GridView1.DataBind();
         }

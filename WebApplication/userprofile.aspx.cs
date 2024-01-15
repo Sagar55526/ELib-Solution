@@ -39,77 +39,57 @@ namespace WebApplication
 
 
         //update button click event
+
         protected void Button1_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (Session["username"].ToString() == "" || Session["username"] == null)
-                {
-                    Response.Write("<script>alert('Session Expired Login Again');</script>");
-                    Response.Redirect("userlogin.aspx");
-                }
-                else
-                {
-                    updateDetails();
-                }
-            }
-            catch (Exception ex)
-            {
-                Response.Write("<script>alert('Session Expired Login Again');</script>");
-                Response.Redirect("userlogin.aspx");
-            }
+                updateDetails();
         }
 
         //user defined functions
 
         void updateDetails()
         {
+            string password = "";
+            if (TextBox11.Text.Trim() == "")
+            {
+                password = TextBox10.Text.Trim();
+            }
+            else
+            {
+                password = TextBox11.Text.Trim();
+            }
             try
             {
-                string password = "";
-                if(TextBox11.Text.Trim() == "")
+                SqlConnection con = new SqlConnection(strcon);
+                if (con.State == ConnectionState.Closed)
                 {
-                    password = TextBox10.Text.Trim();
+                    con.Open();
                 }
-                else
-                {
-                    password = TextBox11.Text.Trim();
-                }
-                using (SqlConnection con = new SqlConnection(strcon))
-                {
-                    if (con.State == ConnectionState.Closed)
-                    {
-                        con.Open();
-                    }
-                    using (SqlCommand cmd = new SqlCommand("update from member_master_tbl set full_name=@full_name, dob=@dob, contact_no=@contact_no, email=@email, " +
-                        "state=@state, city=@city, pincode=@pincode, full_address=@full_address, password=@password, account_status=@account_status where member_id = '"+Session["username"].ToString().Trim()+"'", con))
-                    {
 
-                        cmd.Parameters.AddWithValue("@full_name", TextBox1.Text.Trim());
-                        cmd.Parameters.AddWithValue("@dob", TextBox2.Text.Trim());
-                        cmd.Parameters.AddWithValue("@contact_no", TextBox3.Text.Trim());
-                        cmd.Parameters.AddWithValue("@email", TextBox4.Text.Trim());
-                        cmd.Parameters.AddWithValue("@state", TextBox5.SelectedItem.Value);
-                        cmd.Parameters.AddWithValue("@city", TextBox6.Text.Trim());
-                        cmd.Parameters.AddWithValue("@pincode", TextBox7.Text.Trim());
-                        cmd.Parameters.AddWithValue("@full_address", TextBox8.Text.Trim());
-                        cmd.Parameters.AddWithValue("@password", password);
-                        cmd.Parameters.AddWithValue("@account_status", "pending");
 
-                        int result = cmd.ExecuteNonQuery();
-                        con.Close();
-                        if (result > 0)
-                        {
-                            Response.Write("<script>alert('Member details updated successfully.!!!');</script>");
-                            getMemberDetailsById();
-                            getMemberBookInfo();
-                        }
-                        else
-                        {
-                            Response.Write("<script>alert('Invalid entry.!!!');</script>");
-                        }
-                    }
-                }
+                SqlCommand cmd = new SqlCommand("update member_master_tbl set full_name=@full_name, dob=@dob, contact_no=@contact_no, email=@email, state=@state, city=@city, " +
+                    "pincode=@pincode, full_address=@full_address, password=@password, account_status=@account_status where member_id = '" + Session["username"]
+                    .ToString().Trim() + "'", con);
+
+                cmd.Parameters.AddWithValue("@full_name", TextBox1.Text.Trim());
+                cmd.Parameters.AddWithValue("@dob", TextBox2.Text.Trim());
+                cmd.Parameters.AddWithValue("@contact_no", TextBox3.Text.Trim());
+                cmd.Parameters.AddWithValue("@email", TextBox4.Text.Trim());
+                cmd.Parameters.AddWithValue("@state", TextBox5.SelectedItem.Value);
+                cmd.Parameters.AddWithValue("@city", TextBox6.Text.Trim());
+                cmd.Parameters.AddWithValue("@pincode", TextBox7.Text.Trim());
+                cmd.Parameters.AddWithValue("@full_address", TextBox8.Text.Trim());
+                cmd.Parameters.AddWithValue("@password", password);
+                cmd.Parameters.AddWithValue("@account_status", "pending");
+
+                cmd.ExecuteNonQuery();
+                con.Close();
+                
+
+                Response.Write("<script>alert('Your Details Updated Successfully');</script>");
+                getMemberDetailsById();
+                getMemberBookInfo();
+
             }
             catch (Exception ex)
             {
